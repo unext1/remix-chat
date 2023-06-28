@@ -1,0 +1,1 @@
+CREATE TABLE "public"."chat_members" ("user_id" uuid NOT NULL, "chat_id" uuid NOT NULL, PRIMARY KEY ("user_id") , FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON UPDATE restrict ON DELETE restrict, FOREIGN KEY ("chat_id") REFERENCES "public"."chat"("id") ON UPDATE restrict ON DELETE restrict);

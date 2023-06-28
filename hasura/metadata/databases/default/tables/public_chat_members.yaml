@@ -1,0 +1,50 @@
+table:
+  name: chat_members
+  schema: public
+object_relationships:
+  - name: chat
+    using:
+      foreign_key_constraint_on: chat_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        _or:
+          - chat:
+              chat_members:
+                user_id:
+                  _eq: X-Hasura-User-Id
+          - chat:
+              owner_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - chat_id
+        - user_id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - chat_id
+        - user_id
+      filter:
+        _or:
+          - chat:
+              chat_members:
+                user_id:
+                  _eq: X-Hasura-User-Id
+          - chat:
+              owner_id:
+                _eq: X-Hasura-User-Id
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _or:
+          - chat:
+              owner_id:
+                _eq: X-Hasura-User-Id
+          - user_id:
+              _eq: X-Hasura-User-Id
